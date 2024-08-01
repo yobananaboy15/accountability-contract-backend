@@ -1,5 +1,6 @@
 ﻿using AccountabilityApp.Data;
 using AccountabilityApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,8 +12,11 @@ namespace AccountabilityApp.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AccountabilityAppDbContext _context;
-        public AuthController(AccountabilityAppDbContext context) { 
+        private readonly IPasswordHasher<User> _passwordHasher;
+        public AuthController(AccountabilityAppDbContext context, IPasswordHasher<User> passwordHasher)
+        {
             _context = context;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpPost("register")]
@@ -21,8 +25,10 @@ namespace AccountabilityApp.Controllers
             var user = new User
             {
                 Email = model.Email,
-                Password = model.Password,
+
             };
+            user.Password = _passwordHasher.HashPassword(user, model.Password);
+
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -33,7 +39,18 @@ namespace AccountabilityApp.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO model)
         {
+            var user = await _context.Users.SingleOrDefaultAsync(user => user.Email == model.Email);
+            if (user == null)
+            {
+                return Unauthorized(new { Message = "Invalid email or password" });
+            }
 
+            if (_passwordHasher.VerifyHashedPassword(user, user.Password, model.Password) != PasswordVerificationResult.Success)
+            {
+                return Unauthorized(new { Message = "Invalid email or password" });
+            }
+
+            return Ok(new { Message = "Logged in" });
         }
 
     }

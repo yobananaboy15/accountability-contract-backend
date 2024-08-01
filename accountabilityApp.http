@@ -1,0 +1,15 @@
+### Create a new contract
+POST https://localhost:7195/api/contract
+Content-Type: application/json
+
+{
+  "contractName": "New Contract",
+  "startDate": "2024-08-01T00:00:00Z",
+  "endDate": "2025-08-01T00:00:00Z",
+  "title": "Sample Title",
+  "content": "Sample Content"
+}
+
+### Get contract by ID
+GET https://localhost:7195/api/contract/1
+Accept: application/json
