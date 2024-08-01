@@ -24,7 +24,7 @@ namespace AccountabilityApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register(RegisterDTO model)
         {
             var user = new User
             {
