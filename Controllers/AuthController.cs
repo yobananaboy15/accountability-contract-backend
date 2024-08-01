@@ -8,22 +8,14 @@ namespace AccountabilityApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RegisterController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly AccountabilityAppDbContext _context;
-        public RegisterController(AccountabilityAppDbContext context) { 
+        public AuthController(AccountabilityAppDbContext context) { 
             _context = context;
         }
 
-        //TODO: remove this, it's just here for testing purposes
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
-        {
-            List<User> users = await _context.Users.ToListAsync();
-            return Ok(users);
-        }
-
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO model)
         {
             var user = new User
@@ -38,6 +30,11 @@ namespace AccountabilityApp.Controllers
             return Ok(new { Message = "User registered successfully" });
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDTO model)
+        {
+
+        }
 
     }
 }
