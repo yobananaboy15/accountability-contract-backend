@@ -1,4 +1,5 @@
 ﻿using AccountabilityApp.Data;
+using AccountabilityApp.Helpers;
 using AccountabilityApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,13 @@ namespace AccountabilityApp.Controllers
     {
         private readonly AccountabilityAppDbContext _context;
         private readonly IPasswordHasher<User> _passwordHasher;
-        public AuthController(AccountabilityAppDbContext context, IPasswordHasher<User> passwordHasher)
+        private readonly TokenService _tokenService;
+
+        public AuthController(AccountabilityAppDbContext context, IPasswordHasher<User> passwordHasher, TokenService tokenService)
         {
             _context = context;
             _passwordHasher = passwordHasher;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -50,7 +54,9 @@ namespace AccountabilityApp.Controllers
                 return Unauthorized(new { Message = "Invalid email or password" });
             }
 
-            return Ok(new { Message = "Logged in" });
+            var token = _tokenService.GenerateToken(user.Id.ToString());
+
+            return Ok(new { Token = token });
         }
 
     }
