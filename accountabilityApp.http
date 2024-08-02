@@ -1,9 +1,9 @@
-### Register a new contract
+### Register a new account
 POST https://localhost:7195/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "test@test.com",
+  "email": "test2@test.com",
   "password": "password123"
 }
 
@@ -12,13 +12,14 @@ POST https://localhost:7195/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "test@test.com",
+  "email": "test2@test.com",
   "password": "password123"
 }
 
 ### Create a new contract
 POST https://localhost:7195/api/contract
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwibmJmIjoxNzIyNjAzNTA0LCJleHAiOjE3MjI2MDcxMDQsImlhdCI6MTcyMjYwMzUwNCwiaXNzIjoiZHVtbXlfaXNzdWVyIiwiYXVkIjoiZHVtbXlfYXVkaWVuY2UifQ.92KPly9_qjp0C-IFMuK_5PmNyusNrwm7cXHaosZXsto
 
 {
   "contractName": "New Contract",
@@ -28,6 +29,13 @@ Content-Type: application/json
   "content": "Sample Content"
 }
 
+### Get all contracts 
+GET https://localhost:7195/api/contract
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwibmJmIjoxNzIyNjAzNTA0LCJleHAiOjE3MjI2MDcxMDQsImlhdCI6MTcyMjYwMzUwNCwiaXNzIjoiZHVtbXlfaXNzdWVyIiwiYXVkIjoiZHVtbXlfYXVkaWVuY2UifQ.92KPly9_qjp0C-IFMuK_5PmNyusNrwm7cXHaosZXsto
+Accept: application/json
+
+
 ### Get contract by ID
-GET https://localhost:7195/api/contract/1
+GET https://localhost:7195/api/contract/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwibmJmIjoxNzIyNjAzMTQzLCJleHAiOjE3MjI2MDY3NDMsImlhdCI6MTcyMjYwMzE0MywiaXNzIjoiZHVtbXlfaXNzdWVyIiwiYXVkIjoiZHVtbXlfYXVkaWVuY2UifQ.a3D1RRJYMhiGxD1MOITi_SHjKDR79hyZ2fbl1X8yOww
 Accept: application/json
