@@ -7,6 +7,7 @@ namespace AccountabilityApp.Data
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Contract> Contracts { get; set; }
+        public DbSet<Signature> Signatures { get; set; }
 
         public AccountabilityAppDbContext(DbContextOptions<AccountabilityAppDbContext> options) : base(options) { }
     }
