@@ -2,6 +2,7 @@
 using AccountabilityApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AccountabilityApp.Controllers
 {
@@ -21,10 +22,22 @@ namespace AccountabilityApp.Controllers
         public async Task<IActionResult> SignContract(int id)
         {
             Contract contract = await _context.Contracts.FindAsync(id);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             if (contract == null) {
-                return NotFound();
+                return BadRequest();
             }
+
+            if(contract.CreatedBy != userId)
+            {
+                return Unauthorized();
+            }
+
+            //TODO: add logic for signing from 
+            _context.Signatures.Add(new Signature { ContractId = contract.Id, UserId = userId });
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }
