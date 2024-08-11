@@ -71,5 +71,22 @@ namespace AccountabilityApp.Controllers
         {
             return Ok();
         }
+
+        [HttpGet("token/{token}")]
+        public IActionResult GetContractByToken(string token)
+        {
+            var signature = _context.Signatures.FirstOrDefault(signature => signature.Token == token);
+            if (signature == null || signature.SignedDate.HasValue || signature.ExpirationDate < DateTime.UtcNow)
+            {
+                return NotFound("Invalid, expired or already used token");
+            }
+
+            var contract = _context.Contracts.Find(signature.ContractId);
+            if (contract == null)
+            {
+                return NotFound("Contract not found");
+            }
+            return Ok(contract);
+        }
     }
 }
