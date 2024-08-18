@@ -28,16 +28,33 @@ namespace AccountabilityApp.Controllers
                 return BadRequest();
             }
 
-            if(contract.CreatedBy != userId)
+            if (contract.CreatedBy != userId)
             {
                 return Unauthorized();
             }
 
-            //TODO: add logic for signing from 
             _context.Signatures.Add(new Signature { ContractId = contract.Id, UserId = userId });
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpPost("token/{id}")]
+        public async Task<IActionResult> SignContractByToken (string id)
+        {
+            Signature signature = _context.Signatures.SingleOrDefault(x => x.Token == id);
+            if (signature == null) { 
+                return NotFound("Signature not found");
+            }
+
+            if(signature.ExpirationDate > DateTime.UtcNow)
+            {
+                return BadRequest("Signature token expired");
+            }
+
+            signature.SignedDate = DateTime.UtcNow;
+
+            return Ok("Contract successfully signed");
         }
     }
 }
