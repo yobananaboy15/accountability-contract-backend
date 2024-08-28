@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace AccountabilityApp.Controllers
 {
-    [Route("api/[contoller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class SignatureController : Controller
     {
